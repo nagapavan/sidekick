@@ -4,7 +4,7 @@
   "description": "Your code, made perfect.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha src/*/*.test.js",
+    "test": "mocha src/*.test.js src/*/*.test.js",
     "coverage": "istanbul cover _mocha src/*/*.test.js"
   },
   "bin": {
@@ -41,6 +41,7 @@
     "debug": "2.2.0",
     "lodash": "3.10.1",
     "proxytron": "^1.0.5",
+    "rpcjs": "^1.1.0",
     "ttys": "0.0.3",
     "yargs": "4.3.2"
   },
