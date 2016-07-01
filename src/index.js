@@ -78,9 +78,7 @@ function run() {
 
   process.on("unhandledRejection", function(err) {
     log("unhandled promise rejection! " + err.stack || err);
-    tracking.error(err);
-    write('Unexpected failure: ' + err.message);
-    process.exit(1);
+    handleUnexpectedException(err);
   });
 
 
@@ -93,8 +91,6 @@ function run() {
       fn(yargs);
     } catch(e) {
       handleUnexpectedException(e);
-      console.error("sk suffered an unexpected error");
-      process.exit(1);
     }
   } else {
     if(yargs.argv.v || yargs.argv.version) {
@@ -108,7 +104,9 @@ function run() {
 function handleUnexpectedException(err) {
   log("uncaughtException! " + err.stack || err);
   tracking.error(err);
-  process.exit(1);
+  process.stderr.write("sk suffered an unexpected error", () => {
+    process.exit(1);
+  });
 }
 
 function showHelp() {
@@ -139,8 +137,9 @@ function failWithHelp(cmd) {
   if(cmd) {
     write(`'${cmd}' is not a sidekick command, see usage:\n`);
   }
-  write(help);
-  process.exit(1);
+  process.stdout.write(help, () => {
+    process.exit(1);
+  });
 }
 
 if(require.main === module) {
